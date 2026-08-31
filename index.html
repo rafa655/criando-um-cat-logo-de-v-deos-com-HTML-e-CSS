@@ -1,18 +1,123 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>sopadecarne</title>
+    <title>Portal Acessível</title>
+    <style>
+        /* Estilos base e de alto contraste */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        /* Atalhos de navegação via teclado */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #000000;
+            color: #ffffff;
+            padding: 8px;
+            z-index: 100;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* Barra de ferramentas de acessibilidade */
+        .accessibility-bar {
+            background-color: #f4f4f4;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ccc;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin-right: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            border: 2px solid #000;
+        }
+
+        /* Estilo de Alto Contraste */
+        body.high-contrast {
+            background-color: #000000 !important;
+            color: #ffff00 !important;
+        }
+        body.high-contrast a {
+            color: #ffff00 !important;
+        }
+        body.high-contrast button {
+            background-color: #ffff00;
+            color: #000000;
+        }
+
+        /* Ajustes de fonte */
+        .large-font {
+            font-size: 1.25rem;
+        }
+    </style>
 </head>
-
 <body>
-    </div>
-    <img src="" alt="">
-    
-    </h2>oque é acessibilidade visual</h2>
-    <p>A acessibilidade visual refere-se à capacidade de tornar informações visuais acessíveis a todas as pessoas, independentemente de suas limitações visuais. Isso inclui a criação de designs e conteúdos que possam ser facilmente compreendidos por pessoas com deficiência visual, como cegueira ou baixa visão. </p>
-</body>
 
+    <a href="#main-content" class="skip-link">Ir para o conteúdo principal</a>
+
+    <header role="banner">
+        <div class="accessibility-bar" aria-label="Ferramentas de Acessibilidade">
+            <button onclick="toggleContrast()" aria-label="Alternar para modo de alto contraste">Alto Contraste</button>
+            <button onclick="toggleFontSize()" aria-label="Alternar tamanho da fonte">Aumentar/Diminuir Fonte</button>
+        </div>
+        <h1>Portal de Acessibilidade Integradora</h1>
+    </header>
+
+    <main id="main-content" role="main">
+        <section aria-labelledby="visual-section">
+            <h2 id="visual-section">Recursos para Acessibilidade Visual</h2>
+            <p>Este site foi desenvolvido com alto contraste e marcação semântica para facilitar a leitura por softwares de leitura de tela (como NVDA ou JAWS).</p>
+            
+            <figure>
+                <img src="https://via.placeholder.com/400x200" alt="Exemplo de gráfico mostrando a acessibilidade digital em crescimento no Brasil.">
+                <figcaption>Descrição da imagem para contextualização visual e auditiva.</figcaption>
+            </figure>
+        </section>
+
+        <section aria-labelledby="auditory-section">
+            <h2 id="auditory-section">Recursos para Acessibilidade Auditiva</h2>
+            <p>Todo conteúdo em áudio ou vídeo deve conter transcrições textuais detalhadas ou legendas para pessoas surdas ou com deficiência auditiva.</p>
+            
+            <article>
+                <h3>Áudio Informativo</h3>
+                <audio controls>
+                    <source src="audio-exemplo.mp3" type="audio/mpeg">
+                    Seu navegador não suporta o elemento de áudio.
+                </audio>
+                
+                <details>
+                    <summary><strong>Ler transcrição do áudio (Texto)</strong></summary>
+                    <p><em>Transcrição completa do áudio: "Olá, seja bem-vindo ao portal. Este áudio explica as principais ferramentas de inclusão digital..."</em></p>
+                </details>
+            </article>
+        </section>
+    </main>
+
+    <footer role="contentinfo">
+        <p>&copy; 2026 Portal Acessível. Licenciado sob a Licença MIT.</p>
+    </footer>
+
+    <script>
+        function toggleContrast() {
+            document.body.classList.toggle('high-contrast');
+        }
+
+        function toggleFontSize() {
+            document.body.classList.toggle('large-font');
+        }
+    </script>
+</body>
 </html>
