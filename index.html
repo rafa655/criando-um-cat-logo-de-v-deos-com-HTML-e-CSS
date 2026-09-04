@@ -1,30 +1,28 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Acessível - Autoajuda e Bem-Estar</title>
+    <title>Portal Acessível - Autoajuda & Sons Guiados</title>
     <style>
-        /* Paleta Cromatizada Moderna (CVD Safe & WCAG AAA):
-           Fundo Escuro Profundo (Ametista/Carvão), Contrastes em Menta, Coral e Dourado */
+        /* Paleta Cromatizada WCAG AAA & CVD Safe */
         :root {
             --bg-color: #0D1117;          /* Carvão Profundo */
             --card-bg: #161B22;         /* Azul Metálico Escuro */
-            --text-main: #F0F6FC;       /* Branco Marfim de Alto Contraste */
-            --text-sub: #C9D1D9;        /* Cinza Claro Suave */
-            --border-color: #30363D;    /* Borda Neutra Definitiva */
+            --text-main: #F0F6FC;       /* Branco Marfim */
+            --text-sub: #C9D1D9;        /* Cinza Claro */
+            --border-color: #30363D;    /* Borda Neutra */
             
-            /* Cores de Destaque */
-            --accent-primary: #2DD4BF;   /* Verde Menta Ciano (Acalma e dá Contraste) */
+            --accent-primary: #2DD4BF;   /* Verde Menta Ciano */
             --accent-hover: #14B8A6;     /* Menta Escuro */
-            --accent-sec: #F43F5E;       /* Coral Vibrante (Destaques Visuais) */
-            --badge-bg: #FEF08A;         /* Amarelo Sol (Alto Contraste) */
-            --badge-text: #090D16;       /* Texto Escuro sobre Amarelo */
+            --accent-audio: #A855F7;     /* Roxo Vibrante (Áudios/Sons) */
+            --badge-bg: #FEF08A;         /* Amarelo Sol */
+            --badge-text: #090D16;       /* Texto Escuro */
             
             --font-scale: 1;
         }
 
-        /* Modo Alto Contraste Extremo (Amarelo e Preto Puro) */
+        /* Modo Alto Contraste Extremo */
         body.high-contrast {
             --bg-color: #000000;
             --card-bg: #000000;
@@ -33,6 +31,7 @@
             --border-color: #FFFF00;
             --accent-primary: #00FFFF;
             --accent-hover: #FFFF00;
+            --accent-audio: #FFFF00;
             --badge-bg: #FFFF00;
             --badge-text: #000000;
         }
@@ -47,14 +46,12 @@
             padding: 20px;
         }
 
-        /* Foco ultra-visível para navegação por teclado */
         :focus-visible {
             outline: 4px solid var(--accent-primary) !important;
             outline-offset: 4px;
             border-radius: 4px;
         }
 
-        /* Atalho de navegação */
         .skip-link {
             position: absolute;
             top: -60px;
@@ -71,7 +68,6 @@
             top: 10px;
         }
 
-        /* Barra de Acessibilidade */
         .controls-bar {
             background: var(--card-bg);
             border: 2px solid var(--border-color);
@@ -108,7 +104,16 @@
             color: #FFFFFF;
         }
 
-        /* Estilo do Texto em Braille Visual */
+        .btn-audio-guide {
+            background-color: var(--accent-audio);
+            color: #FFFFFF;
+        }
+
+        .btn-audio-guide:hover {
+            background-color: #9333EA;
+        }
+
+        /* Estilo para Braille Visual */
         .braille-text {
             display: block;
             font-family: 'Courier New', monospace;
@@ -122,7 +127,6 @@
             border-left: 3px solid var(--accent-primary);
         }
 
-        /* Cards da Galeria */
         .media-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -143,16 +147,22 @@
             font-size: 1.4rem;
         }
 
-        img, video {
+        img, video, audio {
             width: 100%;
-            height: auto;
-            border: 2px solid var(--border-color);
             border-radius: 8px;
             display: block;
+        }
+
+        img, video {
+            height: auto;
+            border: 2px solid var(--border-color);
             background-color: #000000;
         }
 
-        /* Badges de Daltonismo (Texto + Cor + Borda) */
+        audio {
+            margin-top: 15px;
+        }
+
         .badge {
             display: inline-block;
             background-color: var(--badge-bg);
@@ -166,7 +176,6 @@
             text-transform: uppercase;
         }
 
-        /* Áreas de Transcrição e Mensagens */
         details {
             margin-top: 15px;
             background: rgba(255, 255, 255, 0.04);
@@ -204,11 +213,16 @@
     <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
 
     <header role="banner">
-        <h1>Portal Acessível: Autoajuda & Cuidado</h1>
+        <h1>Portal Acessível: Autoajuda, Sons & Cuidado</h1>
         
-        <section class="controls-bar" aria-label="Ajustes de Acessibilidade">
-            <h2>Controles de Visualização</h2>
+        <section class="controls-bar" aria-label="Ajustes de Acessibilidade e Assistente de Áudio">
+            <h2>Controles do Portal</h2>
             <div class="btn-group">
+                <!-- Botão de Áudio Guia Geral (Ajuda Pessoas Cegas) -->
+                <button onclick="playAudioGuide()" class="btn-audio-guide" aria-label="Ouvir instrução da página em áudio">
+                    <span aria-hidden="true">🔊</span> Acessar Áudio Guia do Portal
+                </button>
+                
                 <button onclick="toggleContrast()" id="contrast-btn" aria-pressed="false">
                     <span aria-hidden="true">👁️</span> Alto Contraste
                 </button>
@@ -219,22 +233,80 @@
                     <span aria-hidden="true">A-</span> Diminuir Texto
                 </button>
             </div>
+            
+            <!-- Áudio Guia embutido invisível ativado pelo botão -->
+            <audio id="audio-guide" src="audio-guia-portal.mp3" preload="none"></audio>
         </section>
     </header>
 
     <main id="main-content" role="main">
-        
-        <!-- SEÇÃO DE FOTOS COM AUTOAJUDA E BRAILLE -->
-        <section aria-labelledby="sec-fotos">
-            <h2 id="sec-fotos">Inspirações em Foto</h2>
+
+        <!-- SEÇÃO DE AUDIOAJUDA SONORA (FOCO EM DEFICIÊNCIA VISUAL) -->
+        <section aria-labelledby="sec-sons">
+            <h2 id="sec-sons">Sons Terapêuticos e Audioajuda Guiada</h2>
             
             <div class="media-grid">
                 
-                <!-- Foto 1: Superação -->
+                <!-- Som 1: Meditação Sonora -->
+                <article class="media-card">
+                    <h3>Som Relaxante: Chuva e Paisagem Sonora</h3>
+                    
+                    <div aria-label="Tradução em Braille: Som de chuva para paz">
+                        <span class="braille-text" aria-hidden="true">⠎⠕⠍ ⠙⠑ ⠉⠓⠥⠧⠁</span>
+                    </div>
+
+                    <p>Áudio binaural projetado para aliviar a ansiedade e desacelerar os pensamentos.</p>
+
+                    <audio controls preload="metadata" aria-label="Player de áudio: Som relaxante de chuva">
+                        <source src="som-chuva-relaxante.mp3" type="audio/mpeg">
+                        Seu navegador não suporta a reprodução de áudio.
+                    </audio>
+
+                    <span class="badge" role="status">RECURSO: ÁUDIO TERAPÊUTICO</span>
+
+                    <details>
+                        <summary>Ler descrição textual sobre este som</summary>
+                        <p><strong>Descrição do Áudio:</strong> Som contínuo de chuva suave caindo sobre folhas, acompanhado por um tom grave de fundo em 432 Hz, ideal para induzir relaxamento profundo e foco.</p>
+                    </details>
+                </article>
+
+                <!-- Som 2: Afirmações em Áudio -->
+                <article class="media-card">
+                    <h3>Afirmações Guiadas de Autoestima</h3>
+                    
+                    <div aria-label="Tradução em Braille: Afirmaçoes positivas">
+                        <span class="braille-text" aria-hidden="true">⠁⠋⠊⠗⠍⠁⠉⠕⠑⠎</span>
+                    </div>
+
+                    <p>Narração em tom calmo com mensagens de incentivo e fortalecimento pessoal.</p>
+
+                    <audio controls preload="metadata" aria-label="Player de áudio: Afirmações de autoestima">
+                        <source src="audio-afirmacoes.mp3" type="audio/mpeg">
+                        Seu navegador não suporta a reprodução de áudio.
+                    </audio>
+
+                    <span class="badge" role="status">RECURSO: AUDIOAJUDA NARRADA</span>
+
+                    <details>
+                        <summary>Ler transcrição em texto das afirmações</summary>
+                        <p><strong>[Locutor]:</strong> "Eu reconheço minhas conquistas e meu valor. Hoje escolho caminhar com paciência em relação aos meus próprios limites."</p>
+                    </details>
+                </article>
+
+            </div>
+        </section>
+
+        <hr style="margin: 40px 0; border: 1px solid var(--border-color);">
+        
+        <!-- SEÇÃO DE FOTOS COM AUTOAJUDA E BRAILLE -->
+        <section aria-labelledby="sec-fotos">
+            <h2 id="sec-fotos">Inspirações Visuais e Descritivas</h2>
+            
+            <div class="media-grid">
+                
                 <article class="media-card">
                     <h3>Respira e Recomece</h3>
                     
-                    <!-- Braille tátil/visual impresso e acessível por leitor -->
                     <div aria-label="Tradução em Braille: Respira e recomece">
                         <span class="braille-text" aria-hidden="true">⠗⠑⠎⠏⠊⠗⠁ ⠑ ⠗⠑⠉⠕⠍⠑⠉⠑</span>
                     </div>
@@ -250,7 +322,6 @@
                     </figure>
                 </article>
 
-                <!-- Foto 2: Autocuidado -->
                 <article class="media-card">
                     <h3>Paz Interior</h3>
                     
@@ -274,13 +345,12 @@
 
         <hr style="margin: 40px 0; border: 1px solid var(--border-color);">
 
-        <!-- SEÇÃO DE VÍDEOS COM AUTOAJUDA E BRAILLE -->
+        <!-- SEÇÃO DE VÍDEOS MULTISSENSORIAIS -->
         <section aria-labelledby="sec-videos">
-            <h2 id="sec-videos">Guias em Vídeo</h2>
+            <h2 id="sec-videos">Guias em Vídeo com Legenda e Audiodescrição</h2>
             
             <div class="media-grid">
                 
-                <!-- Vídeo 1: Exercício de Respiração -->
                 <article class="media-card">
                     <h3>Técnica de Acalmar a Mente</h3>
                     
@@ -291,9 +361,7 @@
                     <div style="margin-top: 15px;">
                         <video controls preload="metadata">
                             <source src="video-respiracao.mp4" type="video/mp4">
-                            <!-- Legendas CC para deficientes auditivos -->
                             <track kind="captions" src="legendas-respiracao.vtt" srclang="pt-br" label="Português CC" default>
-                            <!-- Audiodescrição para deficientes visuais -->
                             <track kind="descriptions" src="audiodescricao-respiracao.vtt" srclang="pt-br" label="Audiodescrição">
                             Seu navegador não suporta este vídeo.
                         </video>
@@ -303,34 +371,8 @@
 
                     <details>
                         <summary>Ler transcrição completa do Exercício de Respiração</summary>
-                        <p><strong>[Descrição da cena]:</strong> Um instrutor senta em posição confortável sob iluminação azul-ciano suave. Textos com instruções de inspiração e expiração surgem na tela com alto contraste.</p>
+                        <p><strong>[Descrição da cena]:</strong> Um instrutor senta em posição confortável sob iluminação azul-ciano suave...</p>
                         <p><strong>[Áudio/Voz]:</strong> "Puxe o ar pelo nariz em 4 segundos... Segure... Agora solte devagar pela boca..."</p>
-                    </details>
-                </article>
-
-                <!-- Vídeo 2: Fortalecimento Emocional -->
-                <article class="media-card">
-                    <h3>Cultivando a Aposentadoria do Estresse</h3>
-                    
-                    <div aria-label="Tradução em Braille: Calma emocional">
-                        <span class="braille-text" aria-hidden="true">⠉⠁⠇⠍⠁ ⠑⠍⠕⠉⠊⠕⠝⠁⠇</span>
-                    </div>
-
-                    <div style="margin-top: 15px;">
-                        <video controls preload="metadata">
-                            <source src="video-autoajuda.mp4" type="video/mp4">
-                            <track kind="captions" src="legendas-autoajuda.vtt" srclang="pt-br" label="Português CC" default>
-                            <track kind="descriptions" src="audiodescricao-autoajuda.vtt" srclang="pt-br" label="Audiodescrição">
-                            Seu navegador não suporta este vídeo.
-                        </video>
-                    </div>
-
-                    <span class="badge" role="status">CONTEÚDO: PALESTRA MOTIVACIONAL</span>
-                    
-                    <details>
-                        <summary>Ler transcrição completa da Palestra Motivacional</summary>
-                        <p><strong>[Descrição da cena]:</strong> Imagens relaxantes da natureza intercaladas com a especialista falando de forma calma e pausada.</p>
-                        <p><strong>[Áudio/Voz]:</strong> "Aprender a dizer não é um ato de amor próprio. Não se sobrecarregue tentando carregar o mundo..."</p>
                     </details>
                 </article>
 
@@ -357,7 +399,15 @@
             if (fontScale > 1.6) fontScale = 1.6;
             document.documentElement.style.setProperty('--font-scale', fontScale);
         }
+
+        function playAudioGuide() {
+            const audio = document.getElementById('audio-guide');
+            if (audio) {
+                audio.play().catch(() => {
+                    alert("Aperte o play diretamente para ouvir a orientação por voz.");
+                });
+            }
+        }
     </script>
 </body>
 </html>
-
