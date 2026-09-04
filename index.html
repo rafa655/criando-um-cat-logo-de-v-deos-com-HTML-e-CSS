@@ -3,121 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Acessível</title>
+    <title>Galeria Multissensorial Acessível</title>
     <style>
-        /* Estilos base e de alto contraste */
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --accent-color: #005A9C;
+            --card-bg: #f9f9f9;
+            --border-color: #cccccc;
+            --font-scale: 1;
+        }
+
+        /* Alto Contraste para baixa visão e daltonismo */
+        body.high-contrast {
+            --bg-color: #000000;
+            --text-color: #FFFF00;
+            --accent-color: #00FFFF;
+            --card-bg: #121212;
+            --border-color: #ffffff;
+        }
+
         body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
             font-family: Arial, sans-serif;
+            font-size: calc(1rem * var(--font-scale));
             line-height: 1.6;
             margin: 0;
             padding: 20px;
-            background-color: #ffffff;
-            color: #000000;
         }
 
-        /* Atalhos de navegação via teclado */
+        /* Foco visível essencial para navegação por teclado */
+        :focus-visible {
+            outline: 4px solid var(--accent-color) !important;
+            outline-offset: 4px;
+        }
+
         .skip-link {
             position: absolute;
-            top: -40px;
+            top: -50px;
             left: 0;
-            background: #000000;
-            color: #ffffff;
-            padding: 8px;
+            background: var(--accent-color);
+            color: #fff;
+            padding: 10px;
             z-index: 100;
         }
         .skip-link:focus {
             top: 0;
         }
 
-        /* Barra de ferramentas de acessibilidade */
-        .accessibility-bar {
-            background-color: #f4f4f4;
-            padding: 10px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #ccc;
+        .controls-bar {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            padding: 15px;
+            margin-bottom: 30px;
         }
 
         button {
+            background-color: var(--accent-color);
+            color: #ffffff;
+            border: 2px solid currentColor;
             padding: 10px 15px;
-            margin-right: 10px;
             font-size: 1rem;
+            font-weight: bold;
             cursor: pointer;
-            border: 2px solid #000;
+            margin: 5px;
         }
 
-        /* Estilo de Alto Contraste */
-        body.high-contrast {
-            background-color: #000000 !important;
-            color: #ffff00 !important;
-        }
-        body.high-contrast a {
-            color: #ffff00 !important;
-        }
         body.high-contrast button {
-            background-color: #ffff00;
             color: #000000;
+            background-color: var(--text-color);
         }
 
-        /* Ajustes de fonte */
-        .large-font {
-            font-size: 1.25rem;
+        /* Grid responsivo para as mídias */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .media-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        img, video {
+            width: 100%;
+            height: auto;
+            border: 1px solid var(--border-color);
+            display: block;
+        }
+
+        /* Tags com ícone e texto para daltonismo (não depende só da cor) */
+        .tag {
+            display: inline-block;
+            padding: 4px 8px;
+            border: 2px solid var(--text-color);
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        details {
+            margin-top: 10px;
+            background: rgba(0,0,0,0.05);
+            padding: 8px;
         }
     </style>
 </head>
 <body>
 
-    <a href="#main-content" class="skip-link">Ir para o conteúdo principal</a>
+    <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
 
     <header role="banner">
-        <div class="accessibility-bar" aria-label="Ferramentas de Acessibilidade">
-            <button onclick="toggleContrast()" aria-label="Alternar para modo de alto contraste">Alto Contraste</button>
-            <button onclick="toggleFontSize()" aria-label="Alternar tamanho da fonte">Aumentar/Diminuir Fonte</button>
-        </div>
-        <h1>Portal de Acessibilidade Integradora</h1>
+        <h1>Galeria Acessível</h1>
+        
+        <section class="controls-bar" aria-label="Controles de Acessibilidade">
+            <h2>Ferramentas de Acessibilidade</h2>
+            <button onclick="toggleContrast()" id="contrast-btn" aria-pressed="false">Ativar Alto Contraste</button>
+            <button onclick="changeFontSize(0.1)" aria-label="Aumentar tamanho do texto">Aumentar Texto A+</button>
+            <button onclick="changeFontSize(-0.1)" aria-label="Diminuir tamanho do texto">Diminuir Texto A-</button>
+        </section>
     </header>
 
     <main id="main-content" role="main">
-        <section aria-labelledby="visual-section">
-            <h2 id="visual-section">Recursos para Acessibilidade Visual</h2>
-            <p>Este site foi desenvolvido com alto contraste e marcação semântica para facilitar a leitura por softwares de leitura de tela (como NVDA ou JAWS).</p>
-            
-            <figure>
-                <img src="https://via.placeholder.com/400x200" alt="Exemplo de gráfico mostrando a acessibilidade digital em crescimento no Brasil.">
-                <figcaption>Descrição da imagem para contextualização visual e auditiva.</figcaption>
-            </figure>
-        </section>
-
-        <section aria-labelledby="auditory-section">
-            <h2 id="auditory-section">Recursos para Acessibilidade Auditiva</h2>
-            <p>Todo conteúdo em áudio ou vídeo deve conter transcrições textuais detalhadas ou legendas para pessoas surdas ou com deficiência auditiva.</p>
-            
-            <article>
-                <h3>Áudio Informativo</h3>
-                <audio controls>
-                    <source src="audio-exemplo.mp3" type="audio/mpeg">
-                    Seu navegador não suporta o elemento de áudio.
-                </audio>
+        
+        <section aria-labelledby="sec-fotos">
+            <h2 id="sec-fotos">Galeria de Fotos</h2>
+            <div class="media-grid">
                 
-                <details>
-                    <summary><strong>Ler transcrição do áudio (Texto)</strong></summary>
-                    <p><em>Transcrição completa do áudio: "Olá, seja bem-vindo ao portal. Este áudio explica as principais ferramentas de inclusão digital..."</em></p>
-                </details>
-            </article>
+                <article class="media-card">
+                    <h3>Espaço para Foto 1</h3>
+                    <figure>
+                        <img src="sua-foto-1.jpg" alt="Descrição detalhada da imagem 1 para leitores de tela." />
+                        <figcaption>
+                            Legenda visível para a Imagem 1.
+                            <br>
+                            <span class="tag">[CATEGORIA: NATUREZA]</span>
+                        </figcaption>
+                    </figure>
+                </article>
+
+                <article class="media-card">
+                    <h3>Espaço para Foto 2</h3>
+                    <figure>
+                        <img src="sua-foto-2.jpg" alt="Descrição detalhada da imagem 2 para leitores de tela." />
+                        <figcaption>
+                            Legenda visível para a Imagem 2.
+                            <br>
+                            <span class="tag">[CATEGORIA: ARQUITETURA]</span>
+                        </figcaption>
+                    </figure>
+                </article>
+
+            </div>
         </section>
-    </main>
 
-    <footer role="contentinfo">
-        <p>&copy; 2026 Portal Acessível. Licenciado sob a Licença MIT.</p>
-    </footer>
+        <hr style="margin: 40px 0;">
 
-    <script>
-        function toggleContrast() {
-            document.body.classList.toggle('high-contrast');
-        }
-
-        function toggleFontSize() {
-            document.body.classList.toggle('large-font');
-        }
-    </script>
-</body>
-</html>
+        <section aria-labelledby="sec-videos">
+            <h2 id="sec-videos">Galeria de Vídeos</h2>
+            <div class="media-grid">
+                
+                <article class="media-card">
+                    <h3>Espaço para Vídeo 1</h3>
+                    <video controls preload="metadata">
+                        <source src="seu-video-1.mp4" type="video/mp4">
+                        <track kind="captions" src="legendas-1.vtt" srclang="pt-br" label="Português CC" default>
+                        <track kind="descriptions" src="audiodescricao-1.vtt" srclang="pt-br" label="Audiodescrição">
+                        Seu navegador não suporta a execução
